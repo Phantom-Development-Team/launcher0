@@ -413,7 +413,7 @@ namespace UiDesktopApp1.Views.Pages
             Process process = new Process();
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = @"powershell.exe";
-            startInfo.Arguments = "-noexit -c \"$Env:GIT_PYTHON_GIT_EXECUTABLE='git\\bin\\git.exe' ; " + strStartExe1 + " "+lanchFile+" " + params1;
+            startInfo.Arguments = "-noexit -c " + strStartExe1 + " "+lanchFile+" " + params1;
             startInfo.WorkingDirectory = "..\\";
             process.StartInfo = startInfo;
             process.Start();

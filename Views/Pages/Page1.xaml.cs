@@ -43,8 +43,8 @@ namespace UiDesktopApp1.Views.Pages
             {
                 Process process = new Process();
                 ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.FileName = @"powershell.exe";
-                startInfo.Arguments = " -c \"..\\..\\git\\bin\\git.exe remote -v ";
+                startInfo.FileName = @"git.exe";
+                startInfo.Arguments = " remote -v ";
                 startInfo.UseShellExecute = false;
                 startInfo.RedirectStandardOutput = true;
                 startInfo.CreateNoWindow = true;
@@ -100,8 +100,8 @@ namespace UiDesktopApp1.Views.Pages
                     {
                         Process process = new Process();
                         ProcessStartInfo startInfo = new ProcessStartInfo();
-                        startInfo.FileName = @"powershell.exe";
-                        startInfo.Arguments = " -c \"..\\..\\git\\bin\\git.exe remote -v ";
+                        startInfo.FileName = @"git.exe";
+                        startInfo.Arguments = " remote -v ";
                         startInfo.UseShellExecute = false;
                         startInfo.RedirectStandardOutput = true;
                         startInfo.CreateNoWindow = true;
@@ -213,8 +213,8 @@ namespace UiDesktopApp1.Views.Pages
 
             Process process = new Process();
             ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = @"powershell.exe";
-            startInfo.Arguments = " -c \"..\\..\\git\\bin\\git.exe pull";
+            startInfo.FileName = @"git.exe";
+            startInfo.Arguments = " pull";
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;
             startInfo.CreateNoWindow = true;
@@ -264,8 +264,8 @@ namespace UiDesktopApp1.Views.Pages
             {
                 Process process = new Process();
                 ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.FileName = @"powershell.exe";
-                startInfo.Arguments = " -c \"..\\..\\git\\bin\\git.exe remote -v ";
+                startInfo.FileName = @"git.exe";
+                startInfo.Arguments = " remote -v ";
                 startInfo.UseShellExecute = false;
                 startInfo.RedirectStandardOutput = true;
                 startInfo.CreateNoWindow = true;
