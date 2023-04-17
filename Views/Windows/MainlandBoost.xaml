@@ -1,0 +1,39 @@
+﻿<ui:UiWindow x:Class="UiDesktopApp1.Views.Windows.MainlandBoost"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    d:Background="{DynamicResource ApplicationBackgroundBrush}"
+    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    mc:Ignorable="d"
+    Title="国内加速管理" Height="328" Width="650" WindowStartupLocation="CenterScreen">
+    <StackPanel Height="NaN" Margin="0,0,10,5" Width="NaN">
+        <GroupBox Header="pip加速" HorizontalAlignment="Center">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <Label Width="60">加速源:</Label>
+                    <TextBox Width="500" x:Name="pip1">https://mirrors.cloud.tencent.com/pypi/simple</TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Width="60">域 名:</Label>
+                    <TextBox Width="500" x:Name="pip2">mirrors.cloud.tencent.com</TextBox>
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="Github加速" HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal">
+                <Label Width="60">加速源:</Label>
+                <TextBox Width="500" x:Name="github">https://ghproxy.com/https://github.com</TextBox>
+            </StackPanel>
+        </GroupBox>
+        <StackPanel Orientation="Horizontal"  Margin="10,20,10,10" HorizontalAlignment="Center">
+            <Button Width="200" Margin="5" Click="ApplyPIP_Click">加速pip</Button>
+            <Button Width="200" Margin="5" Click="ApplyGithub_Click">加速github</Button>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"  Margin="5,5,5,5" HorizontalAlignment="Center">
+            <Button Width="200" Margin="5" Click="RestorePIP_Click">恢复pip</Button>
+            <Button Width="200" Margin="5" Click="RestoreGithub_Click">恢复github</Button>
+        </StackPanel>
+    </StackPanel>
+</ui:UiWindow>
