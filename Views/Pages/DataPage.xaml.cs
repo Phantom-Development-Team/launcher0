@@ -31,7 +31,7 @@ namespace UiDesktopApp1.Views.Pages
             Process process = new Process();
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = @"git.exe";
-            startInfo.Arguments = "  log --oneline --pretty='%h^^%s^^%cd' --date=\"short\" -n 1";
+            startInfo.Arguments = "  log --oneline --pretty=\"%h^^%s^^%cd\" --date=\"short\" -n 1";
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardError = false;
@@ -87,7 +87,7 @@ namespace UiDesktopApp1.Views.Pages
             Process process = new Process();
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = @"git.exe";
-            startInfo.Arguments = " --no-pager log origin/master --pretty='%h^^%s^^%cd' --date=\"short\" -n 1000";
+            startInfo.Arguments = " --no-pager log origin/master --pretty=\"%h^^%s^^%cd\" --date=\"short\" -n 1000";
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardError = true;
@@ -172,7 +172,7 @@ namespace UiDesktopApp1.Views.Pages
             process = new Process();
             startInfo = new ProcessStartInfo();
             startInfo.FileName = @"git.exe";
-            startInfo.Arguments = " log --oneline --pretty='%h^^%s^^%cd' --date=\"short\" -n 1";
+            startInfo.Arguments = " log --oneline --pretty=\"%h^^%s^^%cd\" --date=\"short\" -n 1";
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardError = false;

@@ -11,7 +11,7 @@
     <StackPanel>
         <StackPanel Margin="5" Orientation="Horizontal">
             <Button  Margin="5" Content="打开目录" Click="Button_Click"></Button>
-            <!--<Button  Margin="5" Content="检查所有(慢)" Click="CheckUpdate_Click"></Button>-->
+            <Button  Margin="5" Content="检查所有" Click="CheckUpdate_Click"></Button>
             <Button  Margin="5" Content="安装扩展" Click="Setup_Click"></Button>
             <Button  Margin="5" Content="刷新目录" Click="Refresh_Click"></Button>
         </StackPanel>
@@ -20,7 +20,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="扩展目录" Binding="{Binding Name}" Width="*"/>
                 <DataGridTextColumn Header="地址" Binding="{Binding GitUrl}" Width="*"/>
-                <!--<DataGridCheckBoxColumn Header="最新?" Binding="{Binding hasUpdate}" Width="60"></DataGridCheckBoxColumn>-->
+                <DataGridCheckBoxColumn Header="最新?" Binding="{Binding hasUpdate}" Width="60"></DataGridCheckBoxColumn>
                 <DataGridTemplateColumn Header="操作" Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

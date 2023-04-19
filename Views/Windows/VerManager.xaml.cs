@@ -56,8 +56,8 @@ namespace UiDesktopApp1.Views.Windows
 
             Process process = new Process();
             ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = @"powershell.exe";
-            startInfo.Arguments = " -c \"..\\..\\git\\bin\\git.exe log --oneline --pretty='%h^^%s^^%cd' --date=\"short\" -n 1\"";
+            startInfo.FileName = @"git.exe";
+            startInfo.Arguments = " log --oneline --pretty=\"%h^^%s^^%cd\" --date=\"short\" -n 1";
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardError = false;
@@ -72,8 +72,8 @@ namespace UiDesktopApp1.Views.Windows
 
             process = new Process();
             startInfo = new ProcessStartInfo();
-            startInfo.FileName = @"powershell.exe";
-            startInfo.Arguments = " -c \"..\\..\\git\\bin\\git.exe remote -v";
+            startInfo.FileName = @"git.exe";
+            startInfo.Arguments = "  remote -v";
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardError = false;
@@ -127,8 +127,8 @@ namespace UiDesktopApp1.Views.Windows
 
             Process process = new Process();
             ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = @"powershell.exe";
-            startInfo.Arguments = " -c \"..\\..\\git\\bin\\git.exe --no-pager log main --pretty='%h^^%s^^%cd' --date=\"short\" -n 150\"";
+            startInfo.FileName = @"git.exe";
+            startInfo.Arguments = "  --no-pager log main --pretty=\"%h^^%s^^%cd\" --date=\"short\" -n 150";
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardError = true;
@@ -187,11 +187,10 @@ namespace UiDesktopApp1.Views.Windows
 
             if (commits.Count <= 0)
             {
-                Debug.WriteLine("1111");
                 process = new Process();
                 startInfo = new ProcessStartInfo();
-                startInfo.FileName = @"powershell.exe";
-                startInfo.Arguments = " -c \"..\\..\\git\\bin\\git.exe --no-pager log master --pretty='%h^^%s^^%cd' --date=\"short\" -n 150\"";
+                startInfo.FileName = @"git.exe";
+                startInfo.Arguments = "  --no-pager log master --pretty=\"%h^^%s^^%cd\" --date=\"short\" -n 150";
                 startInfo.UseShellExecute = false;
                 startInfo.RedirectStandardOutput = true;
                 startInfo.RedirectStandardError = true;
@@ -269,8 +268,8 @@ namespace UiDesktopApp1.Views.Windows
 
             Process process = new Process();
             ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = @"powershell.exe";
-            startInfo.Arguments = " -c \"..\\..\\git\\bin\\git.exe checkout " + hash;
+            startInfo.FileName = @"git.exe";
+            startInfo.Arguments = " checkout " + hash;
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;
             startInfo.CreateNoWindow = true;
@@ -285,8 +284,8 @@ namespace UiDesktopApp1.Views.Windows
 
             process = new Process();
             startInfo = new ProcessStartInfo();
-            startInfo.FileName = @"powershell.exe";
-            startInfo.Arguments = " -c \"..\\..\\git\\bin\\git.exe log --oneline --pretty='%h^^%s^^%cd' --date=\"short\" -n 1\"";
+            startInfo.FileName = @"git.exe";
+            startInfo.Arguments = " log --oneline --pretty=\"%h^^%s^^%cd\" --date=\"short\" -n 1";
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardError = false;
@@ -301,8 +300,8 @@ namespace UiDesktopApp1.Views.Windows
 
             process = new Process();
             startInfo = new ProcessStartInfo();
-            startInfo.FileName = @"powershell.exe";
-            startInfo.Arguments = " -c \"..\\..\\git\\bin\\git.exe remote -v";
+            startInfo.FileName = @"git.exe";
+            startInfo.Arguments = " remote -v";
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardError = false;

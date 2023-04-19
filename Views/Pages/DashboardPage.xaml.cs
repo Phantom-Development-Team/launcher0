@@ -416,7 +416,7 @@ namespace UiDesktopApp1.Views.Pages
             startInfo.Arguments = "-noexit -c " + strStartExe1 + " "+lanchFile+" " + params1;
             startInfo.WorkingDirectory = "..\\";
             process.StartInfo = startInfo;
-            process.Start();
+            process.Start(); 
         }
 
         public class GPUItem

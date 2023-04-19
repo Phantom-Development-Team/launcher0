@@ -159,51 +159,51 @@ namespace UiDesktopApp1.Views.Pages
             var extsDir = Directory.EnumerateDirectories("..\\extensions");
             foreach (string ext in extsDir)
             {
-                //Process process = new Process();
-                //ProcessStartInfo startInfo = new ProcessStartInfo();
-                //startInfo.FileName = @"powershell.exe";
-                //startInfo.Arguments = " -c \"..\\..\\git\\bin\\git.exe remote -v ";
-                //startInfo.UseShellExecute = false;
-                //startInfo.RedirectStandardOutput = true;
-                //startInfo.CreateNoWindow = true;
-                //startInfo.WorkingDirectory = ext;
+                Process process = new Process();
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = @"git.exe";
+                startInfo.Arguments = " remote -v ";
+                startInfo.UseShellExecute = false;
+                startInfo.RedirectStandardOutput = true;
+                startInfo.CreateNoWindow = true;
+                startInfo.WorkingDirectory = ext;
 
-                //process.StartInfo = startInfo;
-                //process.Start();
-                //process.WaitForExit();
+                process.StartInfo = startInfo;
+                process.Start();
+                process.WaitForExit();
 
-                //string msg2 = process.StandardOutput.ReadToEnd();
+                string msg2 = process.StandardOutput.ReadToEnd();
+                ExtItem item1 = new ExtItem();
+                item1.Name = ext;
+                item1.GitUrl = msg2.Split("\\n")[0].Split(" ")[0].Substring(7);
 
-                //ExtItem item1 = new ExtItem();
-                //item1.Name = ext;
-                //item1.GitUrl = msg2.Split("\\n")[0].Split(" ")[0].Substring(7);
+                process = new Process();
+                startInfo = new ProcessStartInfo();
+                startInfo.FileName = @"git.exe";
+                startInfo.Arguments = " remote update ; status -uno";
+                startInfo.UseShellExecute = false;
+                startInfo.RedirectStandardOutput = true;
+                startInfo.CreateNoWindow = true;
+                startInfo.WorkingDirectory = ext;
 
-                //Process process = new Process();
-                //ProcessStartInfo startInfo = new ProcessStartInfo();
-                //startInfo.FileName = @"powershell.exe";
-                //startInfo.Arguments = " -c \"..\\..\\git\\bin\\git.exe remote update ; ..\\..\\git\\bin\\git.exe status -uno";
-                //startInfo.UseShellExecute = false;
-                //startInfo.RedirectStandardOutput = true;
-                //startInfo.CreateNoWindow = true;
-                //startInfo.WorkingDirectory = ext;
+                process.StartInfo = startInfo;
+                process.Start();
+                process.WaitForExit();
 
-                //process.StartInfo = startInfo;
-                //process.Start();
-                //process.WaitForExit();
+                string msg = process.StandardOutput.ReadToEnd();
+                Debug.WriteLine(msg);
+                if (msg.Contains("Your branch is behind"))
+                {
+                    item1.hasUpdate = false;
+                }
+                else
+                {
+                    item1.hasUpdate = true;
+                }
 
-                //string msg = process.StandardOutput.ReadToEnd();
-                //if (msg.Contains("Your branch is behind"))
-                //{
-                //    item1.hasUpdate = false;
-                //}
-                //else
-                //{
-                //    item1.hasUpdate = true;
-                //}
+                ExtCollection.Add(item1);
 
-                //ExtCollection.Add(item1);
-
-                //exts.ItemsSource = ExtCollection;
+                exts.ItemsSource = ExtCollection;
             }
         }
 
