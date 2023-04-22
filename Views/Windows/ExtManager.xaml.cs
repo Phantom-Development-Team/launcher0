@@ -65,7 +65,6 @@ namespace UiDesktopApp1.Views.Windows
         private void Setup_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             System.Windows.Controls.Button btn = (System.Windows.Controls.Button)sender;
-            Debug.WriteLine(btn.Tag);
 
             Process process = new Process();
             ProcessStartInfo startInfo = new ProcessStartInfo();

@@ -78,7 +78,7 @@ namespace UiDesktopApp1.ViewModels
 
             NavigationItem to = new NavigationItem()
             {
-                Content = "主题",
+                Content = "亮灯",
                 PageTag = "Toggle theme",
                 Icon = SymbolRegular.Lightbulb16,
 

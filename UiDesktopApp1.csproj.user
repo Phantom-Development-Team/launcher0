@@ -10,7 +10,7 @@
     <Compile Update="Views\Pages\Models.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Pages\Page1.xaml.cs">
+    <Compile Update="Views\Pages\Exts.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Windows\ExtManager.xaml.cs">
@@ -42,7 +42,7 @@
     <Page Update="Views\Pages\Models.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Pages\Page1.xaml">
+    <Page Update="Views\Pages\Exts.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Windows\CROSManager.xaml">

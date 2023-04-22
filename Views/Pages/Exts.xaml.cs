@@ -36,8 +36,20 @@ namespace UiDesktopApp1.Views.Pages
 
         public List<ExtItem> commits;
         public ObservableCollection<ExtItem> ExtCollection = new();
+        public List<ExtRemote> extRemote;
         public Page1()
         {
+            var httpClient = new HttpClient();
+            var jsonOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+
+            using (var request = new HttpRequestMessage(HttpMethod.Get,
+                "https://gitee.com/nightaway/automatic111-webui-exts/raw/master/exts_ver.json"))
+            {
+                var response = httpClient.Send(request);
+                response.EnsureSuccessStatusCode();
+                using var stream = response.Content.ReadAsStream();
+                extRemote = JsonSerializer.Deserialize<List<ExtRemote>>(stream, jsonOptions);
+            }
             List<string> extsDir = new List<string>(Directory.EnumerateDirectories("..\\extensions"));
             for (int i = 0; i<extsDir.Count(); i++)
             {
@@ -61,20 +73,52 @@ namespace UiDesktopApp1.Views.Pages
                 item1.Name = extsDir[i].Split("\\")[2];
                 item1.Path =  extsDir[i];
                 item1.GitUrl = msg.Split("\\n")[0].Split(" ")[0].Substring(7);
-                ExtCollection.Add(item1);
 
-                //bgWorker.ReportProgress(i, "Working");
-                //System.Threading.Thread.Sleep(10);
+                process = new Process();
+                startInfo = new ProcessStartInfo();
+                startInfo.FileName = @"git.exe";
+                startInfo.Arguments = "  log --oneline --pretty=\"%h^^%s^^%cd\" --date=\"short\" -n 1";
+                startInfo.UseShellExecute = false;
+                startInfo.RedirectStandardOutput = true;
+                startInfo.RedirectStandardError = false;
+                startInfo.CreateNoWindow = true;
+                startInfo.WorkingDirectory =  extsDir[i];
+
+                process.StartInfo = startInfo;
+                process.Start();
+                process.WaitForExit();
+
+                msg = process.StandardOutput.ReadToEnd();
+                string[] data = msg.Split("^^");
+                item1.Hash = data[0];
+                item1.Date = data[2];
+
+                for (int j = 0; j< extRemote.Count; j++)
+                {
+                    if (extRemote[j].url.Split("//").Length > 1)
+                    {
+                        //Debug.WriteLine(item1.GitUrl.Split("//")[1].Split("/")[2]);
+                        //Debug.WriteLine(extRemote[j].url.Split("//")[1].Split("/")[2]);
+                        if (item1.GitUrl.Split("//")[1].Split("/")[2] == extRemote[j].url.Split("//")[1].Split("/")[2])
+                        {
+                            if (item1.Hash == extRemote[j].hash)
+                            {
+                                item1.hasUpdate = false;
+                            }
+                            else
+                            {
+                                item1.hasUpdate = true;
+                            }
+                        }
+                    }
+                }
+
+                ExtCollection.Add(item1);
             }
 
             InitializeComponent();
-            //InitializeBackgroundWorker();
 
-            //if (bgWorker.IsBusy)
-            //    return;
-
-            //bgWorker.RunWorkerAsync("hello");
-            exts.ItemsSource = ExtCollection;
+           exts.ItemsSource = ExtCollection;
 
         }
         private void InitializeBackgroundWorker()
@@ -85,7 +129,6 @@ namespace UiDesktopApp1.Views.Pages
             bgWorker.ProgressChanged += new ProgressChangedEventHandler(bgWorker_ProgessChanged);
             bgWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bgWorker_WorkerCompleted);
         }
-
         public void bgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
                 if (bgWorker.CancellationPending)
@@ -176,11 +219,13 @@ namespace UiDesktopApp1.Views.Pages
                 ExtItem item1 = new ExtItem();
                 item1.Name = ext;
                 item1.GitUrl = msg2.Split("\\n")[0].Split(" ")[0].Substring(7);
+                string []strs = item1.GitUrl.Split("/");
+                //Debug.WriteLine("https://gitcode.net/nightaway/"+strs[strs.Length-1]);
 
                 process = new Process();
                 startInfo = new ProcessStartInfo();
                 startInfo.FileName = @"git.exe";
-                startInfo.Arguments = " remote update ; status -uno";
+                startInfo.Arguments = " remote set-url origin "+ "https://gitcode.net/nightaway/"+strs[strs.Length-1];
                 startInfo.UseShellExecute = false;
                 startInfo.RedirectStandardOutput = true;
                 startInfo.CreateNoWindow = true;
@@ -190,16 +235,29 @@ namespace UiDesktopApp1.Views.Pages
                 process.Start();
                 process.WaitForExit();
 
-                string msg = process.StandardOutput.ReadToEnd();
-                Debug.WriteLine(msg);
-                if (msg.Contains("Your branch is behind"))
-                {
-                    item1.hasUpdate = false;
-                }
-                else
-                {
-                    item1.hasUpdate = true;
-                }
+                //process = new Process();
+                //startInfo = new ProcessStartInfo();
+                //startInfo.FileName = @"git.exe";
+                //startInfo.Arguments = " remote set-url origin "+ "https://gitcode.net/nightaway/"+strs[strs.Length-1];
+                //startInfo.UseShellExecute = false;
+                //startInfo.RedirectStandardOutput = true;
+                //startInfo.CreateNoWindow = true;
+                //startInfo.WorkingDirectory = ext;
+
+                //process.StartInfo = startInfo;
+                //process.Start();
+                //process.WaitForExit();
+
+                //string msg = process.StandardOutput.ReadToEnd();
+                //Debug.WriteLine(msg);
+                //if (msg.Contains("Your branch is behind"))
+                //{
+                //    item1.hasUpdate = false;
+                //}
+                //else
+                //{
+                //    item1.hasUpdate = true;
+                //}
 
                 ExtCollection.Add(item1);
 
@@ -214,7 +272,7 @@ namespace UiDesktopApp1.Views.Pages
             Process process = new Process();
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = @"git.exe";
-            startInfo.Arguments = " pull";
+            startInfo.Arguments = " pull origin master";
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;
             startInfo.CreateNoWindow = true;
@@ -227,14 +285,43 @@ namespace UiDesktopApp1.Views.Pages
             string msg = process.StandardOutput.ReadToEnd();
             Debug.WriteLine(msg);
 
-            if (msg.Contains("Already up to date."))
+            if (msg.Length <= 0 )
             {
-                MessageBox.Show("代码已经是最新的了！");
-            }
-            else
+                process = new Process();
+                startInfo = new ProcessStartInfo();
+                startInfo.FileName = @"git.exe";
+                startInfo.Arguments = " pull origin main";
+                startInfo.UseShellExecute = false;
+                startInfo.RedirectStandardOutput = true;
+                startInfo.CreateNoWindow = true;
+                startInfo.WorkingDirectory = (string)btn.Tag;
+
+                process.StartInfo = startInfo;
+                process.Start();
+                process.WaitForExit();
+
+                string msg2 = process.StandardOutput.ReadToEnd();
+                if (msg2.Contains("Already up to date."))
+                {
+                    MessageBox.Show("代码已经是最新的了！");
+                }
+                else
+                {
+                    MessageBox.Show("更新成功！");
+                }
+            } else
             {
-                MessageBox.Show("更新成功！");
+                if (msg.Contains("Already up to date."))
+                {
+                    MessageBox.Show("代码已经是最新的了！");
+                }
+                else
+                {
+                    MessageBox.Show("更新成功！");
+                }
             }
+
+           
         }
         private void openExt_Click(object sender, RoutedEventArgs e)
         {
@@ -287,5 +374,12 @@ namespace UiDesktopApp1.Views.Pages
 
             exts.ItemsSource = ExtCollection;
         }
+    }
+    public class ExtRemote
+    {
+        public string name { get; set; }
+        public string hash { get; set; }
+        public string date { get; set; }
+        public string url { get; set; }
     }
 }
