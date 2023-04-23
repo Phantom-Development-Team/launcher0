@@ -9,7 +9,7 @@
     d:DataContext="{d:DesignInstance local:DashboardPage, IsDesignTimeCreatable=False}"
     d:Background="{DynamicResource ApplicationBackgroundBrush}"
     Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-    mc:Ignorable="d" Loaded="UiPage_Loaded" Height="760" Width="1200">
+    mc:Ignorable="d" Loaded="UiPage_Loaded" Height="800" Width="1200">
     <Grid VerticalAlignment="Top">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="446" />
@@ -18,9 +18,9 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="760"></RowDefinition>
+            <RowDefinition Height="795"></RowDefinition>
         </Grid.RowDefinitions>
-        <StackPanel HorizontalAlignment="Left" Margin="0,5,0,0" Width="Auto" Grid.Row="0" Height="745" VerticalAlignment="Top" Grid.ColumnSpan="3">
+        <StackPanel HorizontalAlignment="Left" Margin="0,5,0,0" Width="Auto" Grid.Row="0" Height="775" VerticalAlignment="Top" Grid.ColumnSpan="3">
             <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"></ColumnDefinition>
@@ -87,13 +87,15 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <ui:ToggleSwitch Margin="3" Grid.Row="0" Grid.Column="0" Content="--no-half (不使用半精度 模型,10系及以下需要开启)" />
                     <ui:ToggleSwitch Margin="3" Grid.Row="0" Grid.Column="1" Content="--no-half-vae (不使用半精度 vae)" />
                     <ui:ToggleSwitch Margin="3" Grid.Row="1" Grid.Column="0" Content="--disable-nan-check (关闭溢出检测)" />
                     <ui:ToggleSwitch Margin="3" Grid.Row="1" Grid.Column="1" Content="--skip-version-check (跳过torch和xformer版本检测)" />
                     <ui:ToggleSwitch Margin="3" Grid.Row="2" Grid.Column="0" Content="--no-hashing (关闭模型hash计算提高加载速度)" />
-                    <ui:ToggleSwitch Margin="3" Grid.Row="2" Grid.Column="1" Content="--opt-channelslast" />
+                    <ui:ToggleSwitch Margin="3" Grid.Row="2" Grid.Column="1" Content="--opt-channelslast (张量格式优化，提升性能)" />
+                    <ui:ToggleSwitch Margin="3" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="--no-gradio-queue (不使用独立任务队列，使webui相同端口可以共享操作，早期的webui预设)" />
                 </Grid>
             </GroupBox>
             <GroupBox Margin="8,2,2,8" Header="安全性参数"  >

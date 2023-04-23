@@ -43,40 +43,6 @@ namespace UiDesktopApp1.Views.Pages
         {
             Process.Start("Explorer.exe", AppDomain.CurrentDomain.BaseDirectory+"..\\extensions");
         }
-        private void CheckUpdate_Click(object sender, RoutedEventArgs e)
-        {
-            Store.extLocal = new ObservableCollection<ExtItem>();
-            var extsDir = Directory.EnumerateDirectories("..\\extensions");
-            foreach (string ext in extsDir)
-            {
-                Process process = new Process();
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.FileName = @"git.exe";
-                startInfo.Arguments = " remote -v ";
-                startInfo.UseShellExecute = false;
-                startInfo.RedirectStandardOutput = true;
-                startInfo.CreateNoWindow = true;
-                startInfo.WorkingDirectory = ext;
-
-                process.StartInfo = startInfo;
-                process.Start();
-                process.WaitForExit();
-
-                string msg2 = process.StandardOutput.ReadToEnd();
-                ExtItem item1 = new ExtItem();
-                item1.Name = ext;
-                item1.GitUrl = msg2.Split("\\n")[0].Split(" ")[0].Substring(7);
-                string []strs = item1.GitUrl.Split("/");
-
-                process.StartInfo = startInfo;
-                process.Start();
-                process.WaitForExit();
-
-                Store.extLocal.Add(item1);
-
-                exts.ItemsSource = Store.extLocal;
-            }
-        }
 
         private void checkUpdateExt_Click(object sender, RoutedEventArgs e)
         {
@@ -96,7 +62,6 @@ namespace UiDesktopApp1.Views.Pages
             process.WaitForExit();
 
             string msg = process.StandardOutput.ReadToEnd();
-            Debug.WriteLine(msg);
 
             if (msg.Length <= 0 )
             {
@@ -157,33 +122,7 @@ namespace UiDesktopApp1.Views.Pages
         }
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
-            Store.extLocal.Clear();
-            List<string> extsDir = new List<string>(Directory.EnumerateDirectories("..\\extensions"));
-            for (int i = 0; i<extsDir.Count(); i++)
-            {
-                Process process = new Process();
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.FileName = @"git.exe";
-                startInfo.Arguments = " remote -v ";
-                startInfo.UseShellExecute = false;
-                startInfo.RedirectStandardOutput = true;
-                startInfo.CreateNoWindow = true;
-                startInfo.WorkingDirectory = extsDir[i];
-
-                process.StartInfo = startInfo;
-                process.Start();
-                process.WaitForExit();
-
-                string msg = process.StandardOutput.ReadToEnd();
-
-                ExtItem item1 = new ExtItem();
-                item1.Index = i;
-                item1.Name = extsDir[i].Split("\\")[2];
-                item1.Path =  extsDir[i];
-                item1.GitUrl = msg.Split("\\n")[0].Split(" ")[0].Substring(7);
-                Store.extLocal.Add(item1);
-            }
-
+            Init.InitExtData();
             exts.ItemsSource = Store.extLocal;
         }
     }

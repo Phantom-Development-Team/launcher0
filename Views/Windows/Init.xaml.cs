@@ -33,20 +33,8 @@ namespace UiDesktopApp1.Views.Windows
             InitializeComponent();
         }
 
-        public void InitData()
+        public static void InitExtData()
         {
-            this.Show();
-
-            info.Content = "检测显卡。。。";
-            try
-            {
-                PhysicalGPU.GetPhysicalGPUs();
-            } catch (Exception ex)
-            {
-                System.Windows.MessageBox.Show(ex.Message);
-            }
-
-            info.Content = "检测扩展。。。";
             Store.extLocal = new System.Collections.ObjectModel.ObservableCollection<ExtItem>();
 
             Process process;
@@ -61,6 +49,10 @@ namespace UiDesktopApp1.Views.Windows
                 response.EnsureSuccessStatusCode();
                 using var stream = response.Content.ReadAsStream();
                 Store.extRemote = JsonSerializer.Deserialize<List<ExtRemote>>(stream, jsonOptions);
+            }
+            if (!Directory.Exists("..\\extensions"))
+            {
+                return;
             }
             List<string> extsDir = new List<string>(Directory.EnumerateDirectories("..\\extensions"));
             for (int i = 0; i<extsDir.Count(); i++)
@@ -84,60 +76,87 @@ namespace UiDesktopApp1.Views.Windows
                 item1.Index = i;
                 item1.Name = extsDir[i].Split("\\")[2];
                 item1.Path =  extsDir[i];
-                item1.GitUrl = msg.Split("\\n")[0].Split(" ")[0].Substring(7);
-
-                process = new Process();
-                startInfo = new ProcessStartInfo();
-                startInfo.FileName = @"git.exe";
-                startInfo.Arguments = "  log --oneline --pretty=\"%h^^%s^^%cd\" --date=\"short\" -n 1";
-                startInfo.UseShellExecute = false;
-                startInfo.RedirectStandardOutput = true;
-                startInfo.RedirectStandardError = false;
-                startInfo.CreateNoWindow = true;
-                startInfo.WorkingDirectory =  extsDir[i];
-
-                process.StartInfo = startInfo;
-                process.Start();
-                process.WaitForExit();
-
-                msg = process.StandardOutput.ReadToEnd();
-                string[] data = msg.Split("^^");
-                item1.Hash = data[0];
-                item1.Date = data[2];
-
-                process = new Process();
-                startInfo = new ProcessStartInfo();
-                startInfo.FileName = @"git.exe";
-                startInfo.Arguments = " remote set-url origin "+ "https://gitcode.net/nightaway/"+item1.GitUrl.Split("//")[item1.GitUrl.Split("//").Length-1].Split("/")[2];
-                startInfo.UseShellExecute = false;
-                startInfo.RedirectStandardOutput = true;
-                startInfo.CreateNoWindow = true;
-                startInfo.WorkingDirectory = extsDir[i]; ;
-
-                process.StartInfo = startInfo;
-                process.Start();
-                process.WaitForExit();
-
-                for (int j = 0; j< Store.extRemote.Count; j++)
+                if (msg.Length > 0)
                 {
-                    if (Store.extRemote[j].url.Split("//").Length > 1)
+                    item1.GitUrl = msg.Split("\\n")[0].Split(" ")[0].Substring(7);
+                    process = new Process();
+                    startInfo = new ProcessStartInfo();
+                    startInfo.FileName = @"git.exe";
+                    startInfo.Arguments = "  log --oneline --pretty=\"%h^^%s^^%cd\" --date=\"short\" -n 1";
+                    startInfo.UseShellExecute = false;
+                    startInfo.RedirectStandardOutput = true;
+                    startInfo.RedirectStandardError = false;
+                    startInfo.CreateNoWindow = true;
+                    startInfo.WorkingDirectory =  extsDir[i];
+
+                    process.StartInfo = startInfo;
+                    process.Start();
+                    process.WaitForExit();
+
+                    msg = process.StandardOutput.ReadToEnd();
+                    string[] data = msg.Split("^^");
+                    item1.Hash = data[0];
+                    item1.Date = data[2];
+
+                    process = new Process();
+                    startInfo = new ProcessStartInfo();
+                    startInfo.FileName = @"git.exe";
+                    startInfo.Arguments = " remote set-url origin "+ "https://gitcode.net/nightaway/"+item1.GitUrl.Split("//")[item1.GitUrl.Split("//").Length-1].Split("/")[2];
+                    startInfo.UseShellExecute = false;
+                    startInfo.RedirectStandardOutput = true;
+                    startInfo.CreateNoWindow = true;
+                    startInfo.WorkingDirectory = extsDir[i]; ;
+
+                    process.StartInfo = startInfo;
+                    process.Start();
+                    process.WaitForExit();
+
+                    for (int j = 0; j< Store.extRemote.Count; j++)
                     {
-                        if (item1.GitUrl.Split("//")[item1.GitUrl.Split("//").Length-1].Split("/")[2] == Store.extRemote[j].url.Split("//")[1].Split("/")[2])
+                        if (Store.extRemote[j].url.Split("//").Length > 1)
                         {
-                            if (item1.Hash == Store.extRemote[j].hash)
+                            if (item1.GitUrl.Split("//")[item1.GitUrl.Split("//").Length-1].Split("/")[2] == Store.extRemote[j].url.Split("//")[1].Split("/")[2])
                             {
-                                item1.hasUpdate = false;
-                            }
-                            else
-                            {
-                                item1.hasUpdate = true;
+                                if (item1.Hash == Store.extRemote[j].hash)
+                                {
+                                    item1.hasUpdate = false;
+                                }
+                                else
+                                {
+                                    item1.hasUpdate = true;
+                                }
                             }
                         }
                     }
+                }  else
+                {
+                    item1.GitUrl = "异常";
                 }
 
                 Store.extLocal.Add(item1);
             }
+        }
+
+        public void InitData()
+        {
+            this.Show();
+
+            Process process;
+            ProcessStartInfo startInfo;
+
+            info.Content = "检测显卡。。。";
+            try
+            {
+                PhysicalGPU.GetPhysicalGPUs();
+            } catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show("目前启动器只支持英伟达显卡...");
+                Application.Current.Shutdown();
+            }
+
+            info.Content = "检测扩展。。。";
+
+            InitExtData();
 
             info.Content = "检测代码仓库。。。";
 

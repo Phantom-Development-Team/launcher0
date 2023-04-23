@@ -13,8 +13,6 @@ namespace UiDesktopApp1.Services
     public static class Store
     {
         public static List<ExtRemote> extRemote;
-        //public static List<ExtItem> extLocal;
         public static ObservableCollection<ExtItem> extLocal;
-
     }
 }
