@@ -25,6 +25,9 @@ namespace UiDesktopApp1.Views.Windows
             InitializeComponent();
             SetPageService(pageService);
 
+            Init init = new();
+            init.InitData();
+
             navigationService.SetNavigationControl(RootNavigation);
         }
 
