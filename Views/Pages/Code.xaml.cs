@@ -153,7 +153,20 @@ namespace UiDesktopApp1.Views.Pages
             Process process = new Process();
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = @"git.exe";
-            startInfo.Arguments = " reset --hard; git\\bin\\git.exe checkout " + hash;
+            startInfo.Arguments = " reset --hard";
+            startInfo.UseShellExecute = false;
+            startInfo.RedirectStandardOutput = true;
+            startInfo.CreateNoWindow = true;
+            startInfo.WorkingDirectory = "..\\";
+
+            process.StartInfo = startInfo;
+            process.Start();
+            process.WaitForExit();
+
+            process = new Process();
+            startInfo = new ProcessStartInfo();
+            startInfo.FileName = @"git.exe";
+            startInfo.Arguments = " checkout " + hash;
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;
             startInfo.CreateNoWindow = true;
@@ -282,8 +295,8 @@ namespace UiDesktopApp1.Views.Pages
         {
             Process process = new Process();
             ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = @"git.exe";
-            startInfo.Arguments = " remote update ; status -uno";
+            startInfo.FileName = @"powershell";
+            startInfo.Arguments = " -c git.exe remote update ; -c git.exe status -uno";
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;
             startInfo.CreateNoWindow = true;
@@ -303,7 +316,7 @@ namespace UiDesktopApp1.Views.Pages
                     Process process2 = new Process();
                     ProcessStartInfo startInfo2 = new ProcessStartInfo();
                     startInfo2.FileName = @"git.exe";
-                    startInfo2.Arguments = " origin master";
+                    startInfo2.Arguments = " pull origin master";
                     startInfo2.UseShellExecute = false;
                     startInfo2.RedirectStandardOutput = true;
                     startInfo2.CreateNoWindow = true;

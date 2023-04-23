@@ -55,7 +55,7 @@ namespace UiDesktopApp1.Views.Windows
             Process process = new Process();
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = @"powershell.exe";
-            startInfo.Arguments = " -c \"$Env:GIT_PYTHON_GIT_EXECUTABLE='git\\bin\\git.exe' ; "+strStartExe1.PythonExePath+" -m pip uninstall -y torch torchvision torchaudio xformers";
+            startInfo.Arguments = " -c \""+strStartExe1.PythonExePath+" -m pip uninstall -y torch torchvision torchaudio xformers";
             startInfo.WorkingDirectory = "..\\";
             process.StartInfo = startInfo;
             process.Start();
@@ -64,7 +64,7 @@ namespace UiDesktopApp1.Views.Windows
             process = new Process();
             startInfo = new ProcessStartInfo();
             startInfo.FileName = @"powershell.exe";
-            startInfo.Arguments = " -c \"$Env:GIT_PYTHON_GIT_EXECUTABLE='git\\bin\\git.exe' ; "+strStartExe1.PythonExePath+" -m pip install " + torchVersion[torchv.SelectedIndex];
+            startInfo.Arguments = " -c \" "+strStartExe1.PythonExePath+" -m pip install " + torchVersion[torchv.SelectedIndex];
             startInfo.WorkingDirectory = "..\\";
             process.StartInfo = startInfo;
             process.Start();
@@ -75,7 +75,7 @@ namespace UiDesktopApp1.Views.Windows
                 process = new Process();
                 startInfo = new ProcessStartInfo();
                 startInfo.FileName = @"powershell.exe";
-                startInfo.Arguments = " -c \"$Env:GIT_PYTHON_GIT_EXECUTABLE='git\\bin\\git.exe' ; "+strStartExe1.PythonExePath+" -m pip install launcher\\xformers-0.0.14.dev0-cp310-cp310-win_amd64.whl";
+                startInfo.Arguments = " -c \" "+strStartExe1.PythonExePath+" -m pip install launcher\\xformers-0.0.14.dev0-cp310-cp310-win_amd64.whl";
                 startInfo.WorkingDirectory = "..\\";
                 process.StartInfo = startInfo;
                 process.Start();
@@ -85,7 +85,7 @@ namespace UiDesktopApp1.Views.Windows
                 process = new Process();
                 startInfo = new ProcessStartInfo();
                 startInfo.FileName = @"powershell.exe";
-                startInfo.Arguments = " -c \"$Env:GIT_PYTHON_GIT_EXECUTABLE='git\\bin\\git.exe' ; "+strStartExe1.PythonExePath+" -m pip install  pip install xformers==0.0.16rc425";
+                startInfo.Arguments = " -c \" "+strStartExe1.PythonExePath+" -m pip install  pip install xformers==0.0.16rc425";
                 startInfo.WorkingDirectory = "..\\";
                 process.StartInfo = startInfo;
                 process.Start();
@@ -95,12 +95,21 @@ namespace UiDesktopApp1.Views.Windows
                 process = new Process();
                 startInfo = new ProcessStartInfo();
                 startInfo.FileName = @"powershell.exe";
-                startInfo.Arguments = " -c \"$Env:GIT_PYTHON_GIT_EXECUTABLE='git\\bin\\git.exe' ; "+strStartExe1.PythonExePath+" -m pip install  pip install xformers==0.0.17";
+                startInfo.Arguments = " -c \" "+strStartExe1.PythonExePath+" -m pip install  pip install xformers==0.0.17";
                 startInfo.WorkingDirectory = "..\\";
                 process.StartInfo = startInfo;
                 process.Start();
                 process.WaitForExit();
             }
+
+            //process = new Process();
+            //startInfo = new ProcessStartInfo();
+            //startInfo.FileName = @"powershell.exe";
+            //startInfo.Arguments = " -noexit -c \" "+strStartExe1.PythonExePath+" -m pip install -r requirements.txt";
+            //startInfo.WorkingDirectory = "..\\";
+            //process.StartInfo = startInfo;
+            //process.Start();
+            //process.WaitForExit();
         }
 
         private void cancle_click(object sender, RoutedEventArgs e)

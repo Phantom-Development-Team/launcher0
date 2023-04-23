@@ -68,8 +68,8 @@ namespace UiDesktopApp1.Views.Windows
 
             Process process = new Process();
             ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = @"powershell.exe";
-            startInfo.Arguments = " -c \" ..\\git\\bin\\git.exe clone " + btn.Tag;
+            startInfo.FileName = @"git.exe";
+            startInfo.Arguments = " clone " + btn.Tag;
             startInfo.UseShellExecute = true;
             startInfo.RedirectStandardOutput = false;
             startInfo.CreateNoWindow = false;

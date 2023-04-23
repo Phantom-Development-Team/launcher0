@@ -35,7 +35,7 @@ namespace UiDesktopApp1.ViewModels
 
         private void InitializeViewModel()
         {
-            ApplicationTitle = "SD WebUI 启动器";
+            ApplicationTitle = "SD WebUI 启动器 v4";
 
             NavigationItems = new ObservableCollection<INavigationControl>
             {

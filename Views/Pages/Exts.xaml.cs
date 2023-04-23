@@ -51,6 +51,18 @@ namespace UiDesktopApp1.Views.Pages
             Process process = new Process();
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = @"git.exe";
+            startInfo.Arguments = " reset --hard";
+            startInfo.UseShellExecute = false;
+            startInfo.RedirectStandardOutput = true;
+            startInfo.CreateNoWindow = true;
+            startInfo.WorkingDirectory = (string)btn.Tag;
+            process.StartInfo = startInfo;
+            process.Start();
+            process.WaitForExit();
+
+            process = new Process();
+            startInfo = new ProcessStartInfo();
+            startInfo.FileName = @"git.exe";
             startInfo.Arguments = " pull origin master";
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;

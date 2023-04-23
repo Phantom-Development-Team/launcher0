@@ -40,6 +40,19 @@ namespace UiDesktopApp1.Views.Windows
             Process process;
             ProcessStartInfo startInfo;
 
+            process = new Process();
+            startInfo = new ProcessStartInfo();
+            startInfo.FileName = @"git.exe";
+            startInfo.Arguments = " config --global --add safe.directory *";
+            startInfo.UseShellExecute = false;
+            startInfo.RedirectStandardOutput = false;
+            startInfo.CreateNoWindow = true;
+            startInfo.WorkingDirectory = "";
+
+            process.StartInfo = startInfo;
+            process.Start();
+            process.WaitForExit();
+
             var httpClient = new HttpClient();
             var jsonOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
             using (var request = new HttpRequestMessage(HttpMethod.Get,
@@ -69,16 +82,31 @@ namespace UiDesktopApp1.Views.Windows
                 process.StartInfo = startInfo;
                 process.Start();
                 process.WaitForExit();
-
+   
                 string msg = process.StandardOutput.ReadToEnd();
-
                 ExtItem item1 = new ExtItem();
                 item1.Index = i;
                 item1.Name = extsDir[i].Split("\\")[2];
                 item1.Path =  extsDir[i];
                 if (msg.Length > 0)
                 {
+                    if (msg.Split("\\n").Length <= 0) continue;
+                    if (msg.Split("\\n")[0].Split(" ").Length <= 0) continue;
                     item1.GitUrl = msg.Split("\\n")[0].Split(" ")[0].Substring(7);
+
+                    process = new Process();
+                    startInfo = new ProcessStartInfo();
+                    startInfo.FileName = @"git.exe";
+                    startInfo.Arguments = " remote set-url origin "+ "https://gitcode.net/nightaway/"+item1.GitUrl.Split("//")[item1.GitUrl.Split("//").Length-1].Split("/")[2];
+                    startInfo.UseShellExecute = false;
+                    startInfo.RedirectStandardOutput = true;
+                    startInfo.CreateNoWindow = true;
+                    startInfo.WorkingDirectory = extsDir[i]; ;
+
+                    process.StartInfo = startInfo;
+                    process.Start();
+                    process.WaitForExit();
+
                     process = new Process();
                     startInfo = new ProcessStartInfo();
                     startInfo.FileName = @"git.exe";
@@ -97,19 +125,6 @@ namespace UiDesktopApp1.Views.Windows
                     string[] data = msg.Split("^^");
                     item1.Hash = data[0];
                     item1.Date = data[2];
-
-                    process = new Process();
-                    startInfo = new ProcessStartInfo();
-                    startInfo.FileName = @"git.exe";
-                    startInfo.Arguments = " remote set-url origin "+ "https://gitcode.net/nightaway/"+item1.GitUrl.Split("//")[item1.GitUrl.Split("//").Length-1].Split("/")[2];
-                    startInfo.UseShellExecute = false;
-                    startInfo.RedirectStandardOutput = true;
-                    startInfo.CreateNoWindow = true;
-                    startInfo.WorkingDirectory = extsDir[i]; ;
-
-                    process.StartInfo = startInfo;
-                    process.Start();
-                    process.WaitForExit();
 
                     for (int j = 0; j< Store.extRemote.Count; j++)
                     {
