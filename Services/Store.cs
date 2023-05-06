@@ -14,5 +14,6 @@ namespace UiDesktopApp1.Services
     {
         public static List<ExtRemote> extRemote;
         public static ObservableCollection<ExtItem> extLocal;
+        public static ExtRemote extWebui;
     }
 }

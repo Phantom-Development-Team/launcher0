@@ -20,6 +20,7 @@ using UiDesktopApp1.Models;
 using UiDesktopApp1.Services;
 using UiDesktopApp1.Views.Pages;
 using Wpf.Ui.Controls;
+using static System.Net.WebRequestMethods;
 
 namespace UiDesktopApp1.Views.Windows
 {
@@ -39,6 +40,7 @@ namespace UiDesktopApp1.Views.Windows
 
             Process process;
             ProcessStartInfo startInfo;
+
 
             process = new Process();
             startInfo = new ProcessStartInfo();
@@ -101,7 +103,7 @@ namespace UiDesktopApp1.Views.Windows
                     startInfo.UseShellExecute = false;
                     startInfo.RedirectStandardOutput = true;
                     startInfo.CreateNoWindow = true;
-                    startInfo.WorkingDirectory = extsDir[i]; ;
+                    startInfo.WorkingDirectory = extsDir[i]; 
 
                     process.StartInfo = startInfo;
                     process.Start();
@@ -110,7 +112,7 @@ namespace UiDesktopApp1.Views.Windows
                     process = new Process();
                     startInfo = new ProcessStartInfo();
                     startInfo.FileName = @"git.exe";
-                    startInfo.Arguments = "  log --oneline --pretty=\"%h^^%s^^%cd\" --date=\"short\" -n 1";
+                    startInfo.Arguments = " log --oneline --pretty=\"%h^^%s^^%cd\" --date=\"short\" -n 1";
                     startInfo.UseShellExecute = false;
                     startInfo.RedirectStandardOutput = true;
                     startInfo.RedirectStandardError = false;
@@ -130,8 +132,9 @@ namespace UiDesktopApp1.Views.Windows
                     {
                         if (Store.extRemote[j].url.Split("//").Length > 1)
                         {
-                            if (item1.GitUrl.Split("//")[item1.GitUrl.Split("//").Length-1].Split("/")[2] == Store.extRemote[j].url.Split("//")[1].Split("/")[2])
+                            if (item1.GitUrl.Split("//")[item1.GitUrl.Split("//").Length-1].Split("/")[2].Replace(".git", "") == Store.extRemote[j].url.Split("//")[1].Split("/")[2].Replace(".git", ""))
                             {
+                                //Debug.WriteLine(Store.extRemote[j].url);
                                 if (item1.Hash == Store.extRemote[j].hash)
                                 {
                                     item1.hasUpdate = false;
@@ -147,6 +150,7 @@ namespace UiDesktopApp1.Views.Windows
                 {
                     item1.GitUrl = "异常";
                 }
+
 
                 Store.extLocal.Add(item1);
             }
@@ -175,14 +179,15 @@ namespace UiDesktopApp1.Views.Windows
 
             info.Content = "检测代码仓库。。。";
 
+
             process = new Process();
             startInfo = new ProcessStartInfo();
             startInfo.FileName = @"git.exe";
-            startInfo.Arguments = " remote set-url origin "+ "https://ghproxy.com/https://github.com/AUTOMATIC1111/stable-diffusion-webui.git";
+            startInfo.Arguments = " remote set-url origin https://gitcode.net/nightaway/stable-diffusion-webui";
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;
             startInfo.CreateNoWindow = true;
-            startInfo.WorkingDirectory = "";
+            startInfo.WorkingDirectory = "..";
 
             process.StartInfo = startInfo;
             process.Start();

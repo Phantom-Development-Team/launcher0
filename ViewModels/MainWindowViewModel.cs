@@ -122,6 +122,15 @@ namespace UiDesktopApp1.ViewModels
 
         private void OnToggleThemeClicked(object sender, RoutedEventArgs e)
         {
+            NavigationItem item = (NavigationItem)sender;
+            if (item.Content.ToString() == "亮灯")
+            {
+                item.Content = "关灯";
+            } else
+            {
+                item.Content = "亮灯";
+            }
+
             var currentTheme = Wpf.Ui.Appearance.Theme.GetAppTheme();
 
             Wpf.Ui.Appearance.Theme.Apply(currentTheme == Wpf.Ui.Appearance.ThemeType.Light ? Wpf.Ui.Appearance.ThemeType.Dark : Wpf.Ui.Appearance.ThemeType.Light);

@@ -12,6 +12,7 @@ using Wpf.Ui.Common.Interfaces;
 
 using UiDesktopApp1.Views.Windows;
 using System.Windows.Controls;
+using UiDesktopApp1.Services;
 
 namespace UiDesktopApp1.Views.Pages
 {
@@ -31,7 +32,7 @@ namespace UiDesktopApp1.Views.Pages
             Process process = new Process();
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = @"git.exe";
-            startInfo.Arguments = "  log --oneline --pretty=\"%h^^%s^^%cd\" --date=\"short\" -n 1";
+            startInfo.Arguments = " log --oneline --pretty=\"%h^^%s^^%cd\" --date=\"short\" -n 1";
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardError = false;
@@ -44,6 +45,7 @@ namespace UiDesktopApp1.Views.Pages
 
             string msg = process.StandardOutput.ReadToEnd();
             currHash = msg.Split("^^")[0];
+            //Debug.WriteLine(msg);
 
             process = new Process();
             startInfo = new ProcessStartInfo();
@@ -69,8 +71,36 @@ namespace UiDesktopApp1.Views.Pages
             lblCurrMessage.Content = msg.Split("^^")[1];
             lblCurrGit.Content = msg2.Split("\\n")[0].Split(" ")[0];
 
+            process = new Process();
+            startInfo = new ProcessStartInfo();
+            startInfo.FileName = @"git.exe";
+            startInfo.Arguments = " log --oneline origin master --pretty=\"%h^^%s^^%cd\" --date=\"short\" -n 1";
+            startInfo.UseShellExecute = false;
+            startInfo.RedirectStandardOutput = true;
+            startInfo.RedirectStandardError = false;
+            startInfo.CreateNoWindow = true;
+            startInfo.WorkingDirectory = "..\\";
+
+            process.StartInfo = startInfo;
+            process.Start();
+            process.WaitForExit();
+
+            msg = process.StandardOutput.ReadToEnd();
+            currHash = msg.Split("^^")[0];
+
+            for (int j = 0; j< Store.extRemote.Count; j++)
+            {
+                if (Store.extRemote[j].name == "stable-diffusion-webui")
+                {
+                    if (currHash == Store.extRemote[j].hash)
+                    {
+                        btnUpdateCode.IsEnabled = false;
+                    }
+                }
+            }
+
             commit.ItemsSource  = CommiteCollection;
-            commit2.ItemsSource = tags; 
+            commit2.ItemsSource = tags;
         }
         private void InitializeData()
         {
@@ -293,52 +323,28 @@ namespace UiDesktopApp1.Views.Pages
         }
         private void UpdateCode_Click(object sender, RoutedEventArgs e)
         {
-            Process process = new Process();
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = @"powershell";
-            startInfo.Arguments = " -c git.exe remote update ; -c git.exe status -uno";
-            startInfo.UseShellExecute = false;
-            startInfo.RedirectStandardOutput = true;
-            startInfo.CreateNoWindow = true;
-            startInfo.WorkingDirectory = "..\\";
+            Process process2 = new Process();
+            ProcessStartInfo startInfo2 = new ProcessStartInfo();
+            startInfo2.FileName = @"git.exe";
+            startInfo2.Arguments = " pull ";
+            startInfo2.UseShellExecute = true;
+            startInfo2.RedirectStandardOutput = false;
+            startInfo2.CreateNoWindow = false;
+            startInfo2.WorkingDirectory = "..\\";
 
-            process.StartInfo = startInfo;
-            process.Start();
-            process.WaitForExit();
+            process2.StartInfo = startInfo2;
+            process2.Start();
+            process2.WaitForExit();
 
-            string msg = process.StandardOutput.ReadToEnd();
-            Debug.WriteLine(msg);
-            if (msg.Contains("Your branch is behind"))
-            {
-                MessageBoxResult result = MessageBox.Show("代码需要更新！", "消息", MessageBoxButton.YesNo);
-                if (result == MessageBoxResult.Yes)
-                {
-                    Process process2 = new Process();
-                    ProcessStartInfo startInfo2 = new ProcessStartInfo();
-                    startInfo2.FileName = @"git.exe";
-                    startInfo2.Arguments = " pull origin master";
-                    startInfo2.UseShellExecute = false;
-                    startInfo2.RedirectStandardOutput = true;
-                    startInfo2.CreateNoWindow = true;
-                    startInfo2.WorkingDirectory = "..\\";
+            btnUpdateCode.IsEnabled = false;
 
-                    process2.StartInfo = startInfo2;
-                    process2.Start();
-                    process2.WaitForExit();
+            CommiteCollection.Clear();
+            CommiteTagCollection.Clear();
 
-                    CommiteCollection.Clear();
-                    CommiteTagCollection.Clear();
+            InitializeData();
 
-                    InitializeData();
-
-                    commit.ItemsSource  = CommiteCollection;
-                    commit2.ItemsSource = tags;
-                }
-                
-            } else
-            {
-                MessageBox.Show("代码已经是最新的！");
-            }
+            commit.ItemsSource  = CommiteCollection;
+            commit2.ItemsSource = tags;
         }
     }
     public class TagItem

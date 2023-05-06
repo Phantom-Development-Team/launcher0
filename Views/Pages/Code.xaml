@@ -17,7 +17,7 @@
     <StackPanel>
         <StackPanel Margin="5" Orientation="Horizontal">
             <Button Margin="5" Content="打开目录" Click="Button_Click"></Button>
-            <Button x:Name="btnUpdateCode" Margin="5" Content="检查更新" Click="UpdateCode_Click"></Button>
+            <Button x:Name="btnUpdateCode" Margin="5" Content="更新代码" Click="UpdateCode_Click"></Button>
         </StackPanel>
         <ui:Card Margin="5">
             <StackPanel Orientation="Vertical">

@@ -43,7 +43,6 @@ namespace UiDesktopApp1.Views.Pages
         {
             Process.Start("Explorer.exe", AppDomain.CurrentDomain.BaseDirectory+"..\\extensions");
         }
-
         private void checkUpdateExt_Click(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)sender;
@@ -63,55 +62,18 @@ namespace UiDesktopApp1.Views.Pages
             process = new Process();
             startInfo = new ProcessStartInfo();
             startInfo.FileName = @"git.exe";
-            startInfo.Arguments = " pull origin master";
-            startInfo.UseShellExecute = false;
-            startInfo.RedirectStandardOutput = true;
-            startInfo.CreateNoWindow = true;
+            startInfo.Arguments = " pull";
+            startInfo.UseShellExecute = true;
+            startInfo.RedirectStandardOutput = false;
+            startInfo.CreateNoWindow = false;
             startInfo.WorkingDirectory = (string)btn.Tag;
 
             process.StartInfo = startInfo;
             process.Start();
             process.WaitForExit();
 
-            string msg = process.StandardOutput.ReadToEnd();
-
-            if (msg.Length <= 0 )
-            {
-                process = new Process();
-                startInfo = new ProcessStartInfo();
-                startInfo.FileName = @"git.exe";
-                startInfo.Arguments = " pull origin main";
-                startInfo.UseShellExecute = false;
-                startInfo.RedirectStandardOutput = true;
-                startInfo.CreateNoWindow = true;
-                startInfo.WorkingDirectory = (string)btn.Tag;
-
-                process.StartInfo = startInfo;
-                process.Start();
-                process.WaitForExit();
-
-                string msg2 = process.StandardOutput.ReadToEnd();
-                if (msg2.Contains("Already up to date."))
-                {
-                    MessageBox.Show("代码已经是最新的了！");
-                }
-                else
-                {
-                    MessageBox.Show("更新成功！");
-                }
-            } else
-            {
-                if (msg.Contains("Already up to date."))
-                {
-                    MessageBox.Show("代码已经是最新的了！");
-                }
-                else
-                {
-                    MessageBox.Show("更新成功！");
-                }
-            }
-
-           
+            Init.InitExtData();
+            exts.ItemsSource = Store.extLocal;
         }
         private void openExt_Click(object sender, RoutedEventArgs e)
         {
